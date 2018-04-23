@@ -18,12 +18,9 @@ req = urllib2.Request('http://hz.fang.lianjia.com/loupan/pg'+str(1))
 csvfile = file('lianjia.csv', 'ab+')
 writer = csv.writer(csvfile)
    #读取网页
-#response = urllib3.urlopen(req)
 user_agent = "User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50"
 headers = {"User-Agent": user_agent}    #请求头并非只有一个键值对,所以用字典类型
 response = urllib2.urlopen(req)
-#response = requests.get('http://cs.fang.lianjia.com/loupan/pg'+str(1))
-#print response
 the_page = response.read()
 #解析网页
 soup = BeautifulSoup(the_page,"lxml")
@@ -36,7 +33,6 @@ list5=[]
 list6=[]
 #提取楼盘名称字段
 for tag in soup.find_all(name="div", attrs={"class": re.compile("resblock-desc-wrapper")}):
-    #print tag
     ta1 = tag.find(name="a", attrs={"target": re.compile("_blank")})
     #添加城市字段
     list0.append(r"杭州")
