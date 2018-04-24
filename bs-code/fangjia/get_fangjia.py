@@ -6,8 +6,11 @@ from bs4 import BeautifulSoup
 import csv
 import re
 import sys
+import os
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+FILE_DIR = os.path.dirname(__file__)
 
 def result_html(list0, list1, list2, list3, list4, list5, list6):
     body = '''
@@ -40,7 +43,10 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list6[i] + r'</font></td>'
         body += nrow
     body += '\n' + r'</td></tr></tbody></table>'
-    f = open("fangjia.html", "w")
+
+    html_file = os.path.join(FILE_DIR, "fangjia.html")
+
+    f = open(html_file, "w")
     f.write(body)
     f.close()
     pass
