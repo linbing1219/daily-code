@@ -14,7 +14,7 @@ sys.setdefaultencoding('utf-8')
 
 FILE_DIR = os.path.dirname(__file__)
 
-def result_html(list0, list1, list2, list3, list4, list5, list6):
+def result_html(list0, list1, list2, list3, list4, list5, list6, address_list):
     body = '''
     <!DOCTYPE html>
     <html>
@@ -30,6 +30,7 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
     body += '\n' + r'<th nowrap="nowrap"><font face="Arial">序号</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">区域</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">楼盘名称</font></th>' \
+                   r'<th nowrap="nowrap"><font face="Arial">楼盘地址</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">面积</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">销售状态</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">楼盘类型</font></th>' \
@@ -40,6 +41,7 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + str(i) + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list0[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list1[i] + r'</font></td>'
+        nrow += r'<td nowrap="nowrap"><font face="Arial">' + address_list[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list2[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list3[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list4[i] + r'</font></td>'
@@ -64,10 +66,11 @@ def main():
     list4 = []
     list5 = []
     list6 = []
+    address_list = []
     # 建立csv存储文件，wb写 a+追加模式
     csvfile = file('lianjia.csv', 'wb')
     writer = csv.writer(csvfile)
-    for k in range(1,20):
+    for k in range(1,64):
         print "begin get page %s data..." % str(k)
         #根据网址获取网页
         req = urllib2.Request('http://hz.fang.lianjia.com/loupan/pg'+str(k))
@@ -83,6 +86,8 @@ def main():
             ta0 = tag.find(name="div", attrs={"class": re.compile("resblock-location")})
             ta1 = tag.find(name="a", attrs={"target": re.compile("_blank")})
             t0 = ta0.find(name="span")
+            address = ta0.find(name="a", attrs={"target": re.compile("_blank")})
+            address_list.append(address.string)
             #添加城市字段
             list0.append(t0.string)
             list1.append(ta1.string)
@@ -124,7 +129,7 @@ def main():
         # 将合并的数据存入csv
     writer.writerows(data)
     csvfile.close()
-    html_str = result_html(list0, list1, list2, list3, list4, list5, list6)
+    html_str = result_html(list0, list1, list2, list3, list4, list5, list6, address_list)
 
 
 
