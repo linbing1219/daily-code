@@ -4,7 +4,7 @@
 from django.shortcuts import render
 
 
-def hello(request):
+def Hello(request):
     context = {}
     context['hello'] = 'Hello World!'
     return render(request, 'fangjia.html', context)
