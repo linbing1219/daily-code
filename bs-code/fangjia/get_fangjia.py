@@ -7,6 +7,8 @@ import csv
 import re
 import sys
 import os
+import time
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -21,11 +23,12 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
     <title>杭州房价</title>
     </head>>
     '''
-    body += '\n' + r'<h2><span style="color: #339966;"><font face="STKaiti">杭州最新房价（数据来自链家）</font></span></h2>'
+    body += '\n' + r'<h2><span style="color: #339966;"><font face="STKaiti">杭州最新房价（数据来自链家）  获取时间：' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())) +'</font></span></h2>'
     body += '\n' + r'<table border="1" class="gridtable" id="table">'
     body += '\n' + r'<tbody>'
     body += '\n' + r'<tr align="center" style="color:green;font-family: Arial;">'
-    body += '\n' + r'<th nowrap="nowrap"><font face="Arial">区域</font></th>' \
+    body += '\n' + r'<th nowrap="nowrap"><font face="Arial">序号</font></th>' \
+                   r'<th nowrap="nowrap"><font face="Arial">区域</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">楼盘名称</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">面积</font></th>' \
                    r'<th nowrap="nowrap"><font face="Arial">销售状态</font></th>' \
@@ -34,6 +37,7 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
                    r'<th nowrap="nowrap"><font face="Arial">总价</font></th>'
     for i in range(0, len(list0)):
         nrow = '\n' + r'<tr align="center">'
+        nrow += r'<td nowrap="nowrap"><font face="Arial">' + str(i) + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list0[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list1[i] + r'</font></td>'
         nrow += r'<td nowrap="nowrap"><font face="Arial">' + list2[i] + r'</font></td>'
@@ -63,7 +67,7 @@ def main():
     # 建立csv存储文件，wb写 a+追加模式
     csvfile = file('lianjia.csv', 'wb')
     writer = csv.writer(csvfile)
-    for k in range(1,10):
+    for k in range(1,20):
         print "begin get page %s data..." % str(k)
         #根据网址获取网页
         req = urllib2.Request('http://hz.fang.lianjia.com/loupan/pg'+str(k))
