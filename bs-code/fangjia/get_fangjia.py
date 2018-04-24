@@ -21,7 +21,7 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
     <title>杭州房价</title>
     </head>>
     '''
-    body += '\n' + r'<h2><span style="color: #339966;"><font face="STKaiti">最新房价</font></span></h2>'
+    body += '\n' + r'<h2><span style="color: #339966;"><font face="STKaiti">杭州最新房价（数据来自链家）</font></span></h2>'
     body += '\n' + r'<table border="1" class="gridtable" id="table">'
     body += '\n' + r'<tbody>'
     body += '\n' + r'<tr align="center" style="color:green;font-family: Arial;">'
@@ -44,7 +44,7 @@ def result_html(list0, list1, list2, list3, list4, list5, list6):
         body += nrow
     body += '\n' + r'</td></tr></tbody></table>'
 
-    html_file = os.path.join(FILE_DIR, "fangjia.html")
+    html_file = os.path.join(FILE_DIR, "../../django-code/web/templates", "fangjia.html")
 
     f = open(html_file, "w")
     f.write(body)
@@ -76,9 +76,11 @@ def main():
         soup = BeautifulSoup(the_page,"lxml")
         #提取楼盘名称字段
         for tag in soup.find_all(name="div", attrs={"class": re.compile("resblock-desc-wrapper")}):
+            ta0 = tag.find(name="div", attrs={"class": re.compile("resblock-location")})
             ta1 = tag.find(name="a", attrs={"target": re.compile("_blank")})
+            t0 = ta0.find(name="span")
             #添加城市字段
-            list0.append(r"杭州")
+            list0.append(t0.string)
             list1.append(ta1.string)
 
             #提取建筑面积字段
